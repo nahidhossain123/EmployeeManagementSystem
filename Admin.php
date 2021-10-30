@@ -77,12 +77,21 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php 
+                            $sql="SELECT * from permanent_employee";
+                            $result=mysqli_query($conn,$sql);
+                            while($row=mysqli_fetch_assoc($result))
+                            {
+                        ?>
                         <tr>
-                        <td>Nahid Hossain</td>
-                        <td>nahidhossain351@gmail.com</td>
-                        <td>01864322827</td>
+                        <td><?php echo $row['pm_name'] ?></td>
+                        <td><?php echo $row['pm_email'] ?></td>
+                        <td><?php echo $row['pm_phone'] ?></td>
                         <td><i class="far fa-check-circle"></i></td>
                         </tr>
+                        <?php
+                            }
+                        ?>
                     </tbody>
                     </table>
                 </div>
