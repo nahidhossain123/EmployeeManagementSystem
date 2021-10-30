@@ -25,11 +25,11 @@
             $value=mysqli_fetch_assoc($result);
             if($row>0)
             {
-                $_SESSION['user']=$value['em_email'];
+                $_SESSION['employee']=$value['em_email'];
                 $email=$value['em_email'];
                 if(isset($_POST["rem"]))
                 {
-                    setcookie("user","$email",time() + (86400 * 7), "/");
+                    setcookie("employee","$email",time() + (86400 * 7), "/");
                 }
                 header("Location:Employee.php");
             }

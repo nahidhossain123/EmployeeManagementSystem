@@ -73,7 +73,7 @@
         $house=(27*$salary)/100;
         $covence=(13*$salary)/100;
         $mobile=(30*$salary)/100;
-        $ar=array("basic"=>$basic,"house"=>$house,"covence"=>$covence,'mobile'=>$mobile);
+        $ar=array("Basic(30%)"=>$basic,"House Rent(27%)"=>$house,"Covence(13%)"=>$covence,'Mobile(30%)'=>$mobile);
         $allowance=$_POST['allowance'];
         $value=$_POST['val'];
         if(!empty($allowance[0]) && !empty($value[0]))

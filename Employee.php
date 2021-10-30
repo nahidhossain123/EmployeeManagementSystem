@@ -1,25 +1,44 @@
 <?php
     include "connection.php";
     session_start();
-    if(!isset($_SESSION['user']))
+    if(!isset($_SESSION['employee']))
     {
-      if(!isset($_COOKIE['user']))
+      if(!isset($_COOKIE['employee']))
       {
         header("Location:EmployeeLogin.php"); 
       }else{
-          $val=$_COOKIE['user'];
+          $val=$_COOKIE['employee'];
       }
     }
     else{
-        $val=$_SESSION['user'];
+        $val=$_SESSION['employee'];
     }
     $sql="SELECT * FROM temp_employee WHERE em_email='$val'";
     $result=mysqli_query($conn,$sql);
     $row=mysqli_num_rows($result);
-    $val=mysqli_fetch_assoc($result);
+    $value=mysqli_fetch_assoc($result);
+    
     if($row==0)
     {
-        header("Location:EmployeeLogin.php"); 
+        $sql="SELECT * FROM permanent_employee WHERE pm_email='$val'";
+        $result=mysqli_query($conn,$sql);
+        $row=mysqli_num_rows($result);
+        $value=mysqli_fetch_assoc($result);
+        if($row==0)
+        {
+            header("Location:EmployeeLogin.php"); 
+        }
+        else{
+            $email=$value['pm_email'];
+            $name=$value['pm_name'];
+            $salary=$value['pm_salary'];
+        }
+    }
+    else{
+        $email=$value['em_email'];
+        $name=$value['em_name'];
+        $salary=$value['em_salary'];
+        $id=$value['em_id'];
     }
 ?>
 
@@ -43,7 +62,7 @@
             <div class="admin-details">
                 <img src="Media/profile.png" alt="profile image">
                 <div class="admin-text">
-                    <span> <?php echo $val['em_name'] ?></span>
+                    <span> <?php echo $name ?></span>
                     <span><a href="EmLogout.php">Log-Out</a></span>
                 </div>
                 
@@ -66,15 +85,40 @@
                 <h2>My Proposal</h2>
                 <hr>
                 <div class="table-item">
-                    <span id="odd"><span>Name</span><span>Nahid Hossain</span></span>
-                    <span><span>Email</span><span>nahidhossain@gmail.com</span></span>
-                    <span id="odd"><span>Salary</span><span>10000</span></span>
-                    <span><span>Basic(30%)</span><span>3000</span></span>
-                    <span id="odd"><span>Home Rent(27%)</span><span>2700</span></span>
-                    <span><span>Covence(13%)</span><span>1300</span></span>
-                    <span id="odd"><span>Mobile Allowance(30%)</span><span>3000</span></span>
+                    <?php 
+                    if(isset($id))
+                    { 
+                    ?>
+                    <span id="odd"><span>Name</span><span><?php echo $name ?></span></span>
+                    <span><span>Email</span><span><?php echo $email ?></span></span>
+                    <span id="odd"><span>Salary</span><span><?php echo $salary ?> BDT</span></span>
+                    <?php
+                        $sql="select * from allowance where em_id ='$email'";
+                        $result=mysqli_query($conn,$sql);
+                        $i=0;
+                        while($row=mysqli_fetch_assoc($result))
+                        {
+                            if($i%2==1){
+                    ?>
+                            <span id="odd"><span><?php echo $row['al_name'] ?></span><span><?php echo $row['al_percent'] ?> BDT</span></span>
+                            <?php
+                            }
+                            else{
+                            ?>
+                            <span><span><?php echo $row['al_name'] ?></span><span><?php echo $row['al_percent'] ?> BDT</span></span>
+                            <?php
+                            }
+                            $i++;
+                        }
+                            ?>
                     <br>
-                    <a href="" class="btn btn-secondary">Accept</a>
+                    <a href="accept.php?email=<?php echo $email ?>" class="btn btn-secondary">Accept</a>
+                    <?php
+                    }else{
+                        echo "<h5 class='text-center'>----------Empty----------</h5>";
+                    } 
+                    ?>
+                    
                 </div>
             </div>
         </div>
