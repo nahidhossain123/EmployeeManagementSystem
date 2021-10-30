@@ -13,50 +13,70 @@
     else{
         $val=$_SESSION['user'];
     }
-    $sql="SELECT * FROM admin WHERE admin_email='$val'";
-    $result=mysqli_query($conn,$sql);
-    $row=mysqli_num_rows($result);
-    $val=mysqli_fetch_assoc($result);
+    $sql1="SELECT * FROM admin WHERE admin_email='$val'";
+    $result1=mysqli_query($conn,$sql1);
+    $row=mysqli_num_rows($result1);
+    $val=mysqli_fetch_assoc($result1);
     if($row==0)
     {
         header("Location:AdminLogin.php"); 
     }
-    $name=$email=$pass=$address=$salary=" ";
+    $name=$email=$pass=$address=$salary=$message=NULL;
     $name_Error=$email_error=$pass_error=$address_error=$salary_error=$newA_Error=" ";
 
     if(isset($_POST['submit'])){
         if(empty($_POST['name']))
         {
-            $name_Error="Name Required!!!";
+            $name_Error="*Name Required!!!";
         }else{
             $name=$_POST['name'];
         }
         if(empty($_POST['email']))
         {
-            $email_error="Email Required!!!";
+            $email_error="*Email Required!!!";
         }else{
             $email=$_POST['email'];
+            $sql="SELECT * from temp_employee where em_email='$email'";
+            $result=mysqli_query($conn,$sql);
+            $row=mysqli_num_rows($result);
+            if($row>0)
+            {
+                $email_error="Email Already Exist Try Another One!!";
+            }
         }
         if(empty($_POST['pass']))
         {
-            $pass_error="pass Required!!!";
+            $pass_error="*Password Required!!!";
         }else{
-            $pass=$_POST['email'];
+            $pass=$_POST['pass'];
         }
         if(empty($_POST['address']))
         {
-            $address_error="address Required!!!";
+            $address_error="*Address Required!!!";
         }else{
             $address=$_POST['address'];
         }
         if(empty($_POST['salary']))
         {
-            $salary_error="salary Required!!!";
+            $salary_error="*Salary Required!!!";
         }else{
             $salary=$_POST['salary'];
         }
         $allowance=$_POST['allowance'];
-        $val=$_POST['val'];
+        $precent=$_POST['val'];
+        if($name_Error==" " && $email_error==" " && $pass_error==" " && $address_error=" " && $salary_error==" ")
+        {
+            $sql="INSERT INTO `temp_employee`( `em_name`, `em_email`, `em_pass`, `em_address`, `em_salary`) VALUES ('$name','$email','$pass','$address','$salary')";
+            $result=mysqli_query($conn,$sql);
+            if($result)
+            {
+                $message="Employee Inserted Successfully!!";
+                header("Location:AddEmployee.php?msg=$message");
+            }
+            else{
+                $message="Insertion Failed!!";
+            }
+        }
         
     }
 ?>
@@ -104,27 +124,37 @@
             <div class="contents" style="overflow-y:auto;">
                 
                 <span style="display:flex;justify-content:center;">
-                    <div style="width:100px;height:100px;border-radius:50px;border:3px solid black;display:flex;justify-content:center;align-items:center">
-                        <i class="fas fa-user-plus fa-3x"></i>
+                    <div style="color:gray;display:flex;justify-content:center;align-items:center">
+                        <i class="fas fa-user-plus fa-2x"></i>
                     </div>
                 </span>
-                <h2>Add Employee</h2>
+                <h4 class="text-center" style="color:gray">Add Employee</h4>
                 <br>
                 <form action="" method="POST">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Full Name" name="name">
+                        <input type="text" class="form-control" placeholder="Full Name" name="name" value="<?php 
+                            if(isset($name))
+                            {
+                                echo $name;
+                            }
+                        ?>">
+                        <small><?php echo $name_Error ?></small>
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control" placeholder="Email" name="email">
+                        <input type="email" class="form-control" placeholder="Email" name="email" value="<?php echo $email ?>">
+                        <small><?php echo $email_error ?></small>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control"  placeholder="Password" name="pass">
+                        <input type="password" class="form-control"  placeholder="Password" name="pass" value="<?php echo $pass ?>">
+                        <small><?php echo $pass_error ?></small>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control"  placeholder="Address" name="add">
+                        <input type="text" class="form-control"  placeholder="Address" name="add" value="<?php echo $address ?>">
+                        <small><?php echo $address_error ?></small>
                     </div>
                     <div class="form-group">
-                        <input type="number" id="salary" onkeyup="Percent()" class="form-control"  placeholder="Salary" name="salary">
+                        <input type="text" id="salary" onkeyup="Percent()" class="form-control"  placeholder="Salary" name="salary" value="<?php echo $salary ?>">
+                        <small><?php echo $salary_error ?></small>
                     </div>
                     <div class="form-group" id="dynamic">
                         <div class="field">
@@ -143,6 +173,12 @@
                     <span id="mobile">Mobile Allowance(30%):</span>
                     <hr>
                     <span id="total">Total(100%):</span>
+                    <small><?php
+                        if(isset($_GET['msg']))
+                        {
+                            echo $_GET['msg'];
+                        }
+                    ?></small>
                 </div>
             </div>
         </div>
