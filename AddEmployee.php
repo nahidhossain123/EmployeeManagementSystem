@@ -21,8 +21,8 @@
     {
         header("Location:AdminLogin.php"); 
     }
-    $name=$email=$pass=$address=$salary=$message=NULL;
-    $name_Error=$email_error=$pass_error=$address_error=$salary_error=$newA_Error=" ";
+    $name=$email=$pass=$add=$salary=$message=NULL;
+    $name_Error=$email_error=$pass_error=$add_error=$salary_error=$newA_Error=" ";
 
     if(isset($_POST['submit'])){
         if(empty($_POST['name']))
@@ -50,11 +50,11 @@
         }else{
             $pass=$_POST['pass'];
         }
-        if(empty($_POST['address']))
+        if(empty($_POST['add']))
         {
-            $address_error="*Address Required!!!";
+            $add_error="*Address Required!!!";
         }else{
-            $address=$_POST['address'];
+            $add=$_POST['add'];
         }
         if(empty($_POST['salary']))
         {
@@ -62,16 +62,42 @@
         }else{
             $salary=$_POST['salary'];
         }
+        
+        $basic=(30*$salary)/100;
+        $house=(27*$salary)/100;
+        $covence=(13*$salary)/100;
+        $mobile=(30*$salary)/100;
+        $ar=array("basic"=>$basic,"house"=>$house,"covence"=>$covence,'mobile'=>$mobile);
         $allowance=$_POST['allowance'];
-        $precent=$_POST['val'];
-        if($name_Error==" " && $email_error==" " && $pass_error==" " && $address_error=" " && $salary_error==" ")
+        $value=$_POST['val'];
+        print_r($value);
+        if(!empty($allowance[0]) && !empty($value[0]))
         {
-            $sql="INSERT INTO `temp_employee`( `em_name`, `em_email`, `em_pass`, `em_address`, `em_salary`) VALUES ('$name','$email','$pass','$address','$salary')";
+            for($i=0;$i<count($allowance);$i++)
+            {
+                $ar+=array($allowance[$i]=>$value[$i]);
+            }
+            print_r($ar);
+        }
+     
+        if($name_Error==" " && $email_error==" " && $pass_error==" " && $add_error==" " && $salary_error==" ")
+        {
+            $sql="INSERT INTO `temp_employee`( `em_name`, `em_email`, `em_pass`, `em_address`, `em_salary`) VALUES ('$name','$email','$pass','$add','$salary')";
             $result=mysqli_query($conn,$sql);
             if($result)
             {
                 $message="Employee Inserted Successfully!!";
-                header("Location:AddEmployee.php?msg=$message");
+                foreach($ar as $key=>$value)
+                {
+                    $sql="INSERT INTO `allowance`( `em_id`, `al_name`, `al_percent`) VALUES ('$email','$key','$value')";
+                    $result=mysqli_query($conn,$sql);
+                    if(!$result)
+                    {
+                        echo "failed";
+                    }
+                }
+                
+                //header("Location:AddEmployee.php?msg=$message");
             }
             else{
                 $message="Insertion Failed!!";
@@ -141,25 +167,45 @@
                         <small><?php echo $name_Error ?></small>
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control" placeholder="Email" name="email" value="<?php echo $email ?>">
+                        <input type="email" class="form-control" placeholder="Email" name="email" value="<?php 
+                            if(isset($email))
+                            {
+                                echo $email;
+                            }
+                        ?>">
                         <small><?php echo $email_error ?></small>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control"  placeholder="Password" name="pass" value="<?php echo $pass ?>">
+                        <input type="password" class="form-control"  placeholder="Password" name="pass" value="<?php 
+                            if(isset($pass))
+                            {
+                                echo $pass;
+                            }
+                        ?>">
                         <small><?php echo $pass_error ?></small>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control"  placeholder="Address" name="add" value="<?php echo $address ?>">
-                        <small><?php echo $address_error ?></small>
+                        <input type="text" class="form-control"  placeholder="Address" name="add" value="<?php 
+                            if(isset($add))
+                            {
+                                echo $add;
+                            }
+                        ?>">
+                        <small><?php echo $add_error ?></small>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="salary" onkeyup="Percent()" class="form-control"  placeholder="Salary" name="salary" value="<?php echo $salary ?>">
+                        <input type="text" id="salary" onkeyup="Percent()" class="form-control"  placeholder="Salary" name="salary" value="<?php 
+                            if(isset($salary))
+                            {
+                                echo $salary;
+                            }
+                        ?>">
                         <small><?php echo $salary_error ?></small>
                     </div>
                     <div class="form-group" id="dynamic">
                         <div class="field">
                             <input type="text" style="margin-right:5px" class="form-control"  placeholder="Allowance" name="allowance[]">
-                            <input type="text" style="margin-right:5px" class="form-control"  placeholder="Percent(%)" name="val[]">
+                            <input type="text" style="margin-right:5px" class="form-control"  placeholder="Value" name="val[]">
                             <span style="margin-top:5px" onclick="addField()"><i class="fas fa-plus-circle"></i></span>
                         </div>
                     </div>

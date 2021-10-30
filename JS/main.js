@@ -14,7 +14,7 @@ const inputs=[];
 function addField(){
     $(dynamic).append(`<div class="field">
     <input type="text" style="margin-right:5px" class="form-control"  placeholder="Allowance" name="allowance[]">
-    <input type="text" style="margin-right:5px" class="form-control"  placeholder="Percent(%)" name="val[]">
+    <input type="text" style="margin-right:5px" class="form-control"  placeholder="Value" name="val[]">
     <span style="margin-top:5px" class="remove-button" onclick="Delete(this)"><i class="far fa-times-circle"></i></span>
     </div>`);   
 }
