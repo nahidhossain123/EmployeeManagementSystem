@@ -1,3 +1,28 @@
+<?php
+    include "connection.php";
+    session_start();
+    if(!isset($_SESSION['user']))
+    {
+      if(!isset($_COOKIE['user']))
+      {
+        header("Location:EmployeeLogin.php"); 
+      }else{
+          $val=$_COOKIE['user'];
+      }
+    }
+    else{
+        $val=$_SESSION['user'];
+    }
+    $sql="SELECT * FROM temp_employee WHERE em_email='$val'";
+    $result=mysqli_query($conn,$sql);
+    $row=mysqli_num_rows($result);
+    $val=mysqli_fetch_assoc($result);
+    if($row==0)
+    {
+        header("Location:EmployeeLogin.php"); 
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,8 +43,8 @@
             <div class="admin-details">
                 <img src="Media/profile.png" alt="profile image">
                 <div class="admin-text">
-                    <span> Admin Name</span>
-                    <span><a href="#">Log-Out</a></span>
+                    <span> <?php echo $val['em_name'] ?></span>
+                    <span><a href="EmLogout.php">Log-Out</a></span>
                 </div>
                 
             </div>
@@ -39,31 +64,17 @@
         <div class="content">
             <<div class="table1">
                 <h2>My Proposal</h2>
+                <hr>
                 <div class="table-item">
-                <table class="table text-center">
-                    <thead>
-                        <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Salary</th>
-                        <th scope="col">Basic(30%)</th>
-                        <th scope="col">House Rent(27%)</th>
-                        <th scope="col">Covence(13%)</th>
-                        <th scope="col">Mobile Allowance(30%)</th>
-                        <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <td>Nahid Hossain</td>
-                        <td>10,000 BDT</td>
-                        <td>2700 BDT</td>
-                        <td>1700 BDT</td>
-                        <td>1300 BDT</td>
-                        <td>3000 BDT</td>
-                        <td><a href="#" class="btn btn-primary py-1 px-3">Accept</a></td>
-                        </tr>
-                    </tbody>
-                    </table>
+                    <span id="odd"><span>Name</span><span>Nahid Hossain</span></span>
+                    <span><span>Email</span><span>nahidhossain@gmail.com</span></span>
+                    <span id="odd"><span>Salary</span><span>10000</span></span>
+                    <span><span>Basic(30%)</span><span>3000</span></span>
+                    <span id="odd"><span>Home Rent(27%)</span><span>2700</span></span>
+                    <span><span>Covence(13%)</span><span>1300</span></span>
+                    <span id="odd"><span>Mobile Allowance(30%)</span><span>3000</span></span>
+                    <br>
+                    <a href="" class="btn btn-secondary">Accept</a>
                 </div>
             </div>
         </div>

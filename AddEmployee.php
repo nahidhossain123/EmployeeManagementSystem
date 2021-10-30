@@ -21,8 +21,8 @@
     {
         header("Location:AdminLogin.php"); 
     }
-    $name=$email=$pass=$add=$salary=$message=NULL;
-    $name_Error=$email_error=$pass_error=$add_error=$salary_error=$newA_Error=" ";
+    $name=$email=$pass=$add=$salary=$message=$phone=NULL;
+    $name_Error=$email_error=$pass_error=$add_error=$salary_error=$newA_Error=$phone_error=" ";
 
     if(isset($_POST['submit'])){
         if(empty($_POST['name']))
@@ -43,6 +43,12 @@
             {
                 $email_error="Email Already Exist Try Another One!!";
             }
+        }
+        if(empty($_POST['phone']))
+        {
+            $phone_error="*Phone Number Required!!!";
+        }else{
+            $phone=$_POST['phone'];
         }
         if(empty($_POST['pass']))
         {
@@ -70,19 +76,17 @@
         $ar=array("basic"=>$basic,"house"=>$house,"covence"=>$covence,'mobile'=>$mobile);
         $allowance=$_POST['allowance'];
         $value=$_POST['val'];
-        print_r($value);
         if(!empty($allowance[0]) && !empty($value[0]))
         {
             for($i=0;$i<count($allowance);$i++)
             {
                 $ar+=array($allowance[$i]=>$value[$i]);
             }
-            print_r($ar);
         }
      
-        if($name_Error==" " && $email_error==" " && $pass_error==" " && $add_error==" " && $salary_error==" ")
+        if($name_Error==" " && $email_error==" " && $pass_error==" " && $add_error==" " && $salary_error==" " && $phone_error==" ")
         {
-            $sql="INSERT INTO `temp_employee`( `em_name`, `em_email`, `em_pass`, `em_address`, `em_salary`) VALUES ('$name','$email','$pass','$add','$salary')";
+            $sql="INSERT INTO `temp_employee`( `em_name`, `em_email`,`em_phone`, `em_pass`, `em_address`, `em_salary`) VALUES ('$name','$email','$phone','$pass','$add','$salary')";
             $result=mysqli_query($conn,$sql);
             if($result)
             {
@@ -97,7 +101,7 @@
                     }
                 }
                 
-                //header("Location:AddEmployee.php?msg=$message");
+                header("Location:AddEmployee.php?msg=$message");
             }
             else{
                 $message="Insertion Failed!!";
@@ -174,6 +178,15 @@
                             }
                         ?>">
                         <small><?php echo $email_error ?></small>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Phone" name="phone" value="<?php 
+                            if(isset($phone))
+                            {
+                                echo $phone;
+                            }
+                        ?>">
+                        <small><?php echo $phone_error ?></small>
                     </div>
                     <div class="form-group">
                         <input type="password" class="form-control"  placeholder="Password" name="pass" value="<?php 

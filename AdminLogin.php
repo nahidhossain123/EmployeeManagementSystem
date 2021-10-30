@@ -28,7 +28,7 @@
             {
                 $_SESSION['user']=$value['admin_email'];
                 $email=$value['admin_email'];
-                if(isset($_POST["rem"][0]))
+                if(isset($_POST["rem"]))
                 {
                     setcookie("user","$email",time() + (86400 * 7), "/");
                 }
@@ -67,8 +67,8 @@
                     <input type="password" class="form-control" id="exampleInputPassword1" name="pass" required>
                 </div>
                 <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1" name="rem[]" value="1">Remember Me</label>
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1" name='rem' value="1">
+                    <label class="form-check-label" for="exampleCheck1" value="1">Remember Me</label>
                 </div>
                 <button type="submit" name="sub" class="btn btn-primary w-100">Log-In</button>
                 <small id="emailHelp" class="form-text text-muted"><?php echo $error ?></small>

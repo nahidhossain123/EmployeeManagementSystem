@@ -1,3 +1,45 @@
+<?php
+    include "connection.php";
+    session_start();
+    $error=" ";
+    $email=$pass="";
+    if(isset($_POST['sub']))
+    {
+        if(empty($_POST['email']))
+        {
+            $error="* Email or Password is Incorrect!!!";
+        }else{
+            $email=$_POST['email'];
+        }
+        if(empty($_POST['pass']))
+        {
+            $error="* Email or Password is Incorrect!!!";
+        }else{
+            $pass=$_POST['pass'];
+        }
+        if($error==" ")
+        {  
+            $sql="SELECT * FROM temp_employee WHERE em_email='$email' and em_pass='$pass' ";
+            $result=mysqli_query($conn,$sql);
+            $row=mysqli_num_rows($result);
+            $value=mysqli_fetch_assoc($result);
+            if($row>0)
+            {
+                $_SESSION['user']=$value['em_email'];
+                $email=$value['em_email'];
+                if(isset($_POST["rem"]))
+                {
+                    setcookie("user","$email",time() + (86400 * 7), "/");
+                }
+                header("Location:Employee.php");
+            }
+            else{
+                $error="* Email or Password is Incorrect!!!";
+            }
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,21 +56,21 @@
         <div class="login-cont">
             <span style="display:flex;justify-content:center;"><i class="fas fa-user-cog fa-6x"></i></span>
             <h3 class="text-center">Employee Login</h3>
-            <form>
+            <form method="POST" action="">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
+                    <input type="password" class="form-control" id="exampleInputPassword1" name="pass" required>
                 </div>
                 <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1" name="rem" value="1">
                     <label class="form-check-label" for="exampleCheck1">Remember Me</label>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Log-In</button>
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <button type="submit" name="sub" class="btn btn-primary w-100">Log-In</button>
+                <small class="form-text text-muted"><?php echo $error ?></small>
             </form>
         </div>
     </div>
