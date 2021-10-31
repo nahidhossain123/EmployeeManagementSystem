@@ -133,7 +133,7 @@
                 <img src="<?php echo $val['admin_image'] ?>" alt="profile image">
                 <div class="admin-text">
                     <span> <?php echo $val['admin_name'] ?></span>
-                    <span><a href="#">Log-Out</a></span>
+                    <span><a href="Logout.php">Log-Out</a></span>
                 </div>
                 
             </div>
