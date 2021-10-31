@@ -56,16 +56,16 @@
                 <span><span class="sm">M</span><span class="md">Management</span></span><span class="cancel" onclick="MinimizeSideMenu()"><i class="fas fa-times"></i></span>
             </div>
             <div class="side-menu-items">
-                <span class="menu-items-con active"><i class="fas fa-tachometer-alt"></i> <a href="Admin.php"><span class="menu-item-text">Dashboard</span></a></span>
+                <span class="menu-items-con"><i class="fas fa-tachometer-alt"></i> <a href="Admin.php"><span class="menu-item-text">Dashboard</span></a></span>
                 <span class="menu-items-con"><i class="fas fa-user-plus"></i> <a href="AddEmployee.php"><span class="menu-item-text">Add Employee</span></a></span>
-                <span class="menu-items-con"><i class="fas fa-info-circle"></i> <a href="EmployeeDetails.php"><span class="menu-item-text">Employee Details</span></a></span>
+                <span class="menu-items-con active"><i class="fas fa-info-circle"></i> <a href="EmployeeDetails.php"><span class="menu-item-text">Employee Details</span></a></span>
                 <span class="menu-items-con"><i class="fas fa-chart-line"></i> <a href="#"><span class="menu-item-text">Statistics</span></a></span>
                 <span class="menu-items-con"><i class="fas fa-tasks"></i> <a href="#"><span class="menu-item-text">Manage</span></a></span>
             </div>
         </div>
         <div class="content">
             <div class="table1">
-                <h2>Accepted</h2>
+                <h2>Permanent Employee List</h2>
                 <div class="table-item">
                 <table class="table text-center">
                     <thead>
@@ -73,7 +73,10 @@
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Phone</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Salary</th>
+                        <th scope="col">Joining Date</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,39 +90,10 @@
                         <td><?php echo $row['pm_name'] ?></td>
                         <td><?php echo $row['pm_email'] ?></td>
                         <td><?php echo $row['pm_phone'] ?></td>
-                        <td><i class="far fa-check-circle"></i></td>
-                        </tr>
-                        <?php
-                            }
-                        ?>
-                    </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="table2">
-                <h2>Proposed</h2>
-                <div class="table-item">
-                <table class="table text-center">
-                    <thead>
-                        <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Phone</th>
-                        <th scope="col">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            $sql="select * from temp_employee";
-                            $result=mysqli_query($conn,$sql);
-                            while($row=mysqli_fetch_assoc($result))
-                            { 
-                        ?>
-                        <tr>
-                        <td><?php echo $row["em_name"] ?></td>
-                        <td><?php echo $row["em_email"] ?></td>
-                        <td><?php echo $row["em_phone"] ?></td>
-                        <td><i class="far fa-times-circle"></i></td>
+                        <td><?php echo $row['pm_pass'] ?></td>
+                        <td><?php echo $row['pm_address'] ?></td>
+                        <td><?php echo $row['pm_salary'] ?></td>
+                        <td><?php echo $row['created_at'] ?></td>
                         </tr>
                         <?php
                             }

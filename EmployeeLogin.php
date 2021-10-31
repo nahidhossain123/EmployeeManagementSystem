@@ -34,7 +34,22 @@
                 header("Location:Employee.php");
             }
             else{
-                $error="* Email or Password is Incorrect!!!";
+                $sql="SELECT * FROM permanent_employee WHERE pm_email='$email' and pm_pass='$pass' ";
+                $result=mysqli_query($conn,$sql);
+                $row=mysqli_num_rows($result);
+                $value=mysqli_fetch_assoc($result);
+                if($row>0)
+                {
+                    $_SESSION['employee']=$value['pm_email'];
+                    $email=$value['pm_email'];
+                    if(isset($_POST["rem"]))
+                    {
+                        setcookie("employee","$email",time() + (86400 * 7), "/");
+                    }
+                    header("Location:Employee.php");
+                }else{
+                    $error="* Email or Password is Incorrect!!!"; 
+                }
             }
         }
     }

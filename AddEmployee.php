@@ -145,7 +145,7 @@
             <div class="side-menu-items">
                 <span class="menu-items-con"><i class="fas fa-tachometer-alt"></i> <a href="Admin.php"><span class="menu-item-text">Dashboard</span></a></span>
                 <span class="menu-items-con active"><i class="fas fa-user-plus"></i> <a href="AddEmployee.php"><span class="menu-item-text">Add Employee</span></a></span>
-                <span class="menu-items-con"><i class="fas fa-info-circle"></i> <a href="#"><span class="menu-item-text">Employee Details</span></a></span>
+                <span class="menu-items-con"><i class="fas fa-info-circle"></i> <a href="EmployeeDetails.php"><span class="menu-item-text">Employee Details</span></a></span>
                 <span class="menu-items-con"><i class="fas fa-chart-line"></i> <a href="#"><span class="menu-item-text">Statistics</span></a></span>
                 <span class="menu-items-con"><i class="fas fa-tasks"></i> <a href="#"><span class="menu-item-text">Manage</span></a></span>
             </div>
